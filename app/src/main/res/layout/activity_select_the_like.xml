@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:background="@drawable/background"
+    android:layout_height="match_parent"
+   android:padding="20dp"
+    tools:context=".activities.SelectTheLikeActivity">
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/titleSelectTheLike"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="28sp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailTil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Title"
+        android:layout_marginTop="10dp"
+        app:hintEnabled="false">
+
+        <EditText
+            android:id="@+id/emailEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_edittext01"
+            android:drawableStart="@drawable/ic_search_white"
+            android:drawablePadding="10dp"
+            android:hint="@string/search"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            tools:ignore="TextFields"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</RelativeLayout>
