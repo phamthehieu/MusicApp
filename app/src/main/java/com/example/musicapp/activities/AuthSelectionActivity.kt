@@ -5,14 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.os.Handler
-import android.preference.PreferenceManager
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.musicapp.R
 import com.example.musicapp.databinding.ActivityAuthSelectionBinding
+import com.example.musicapp.models.User
 import com.github.ybq.android.spinkit.SpinKitView
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -139,7 +138,7 @@ class AuthSelectionActivity : AppCompatActivity() {
                     intent.putExtra("userImage", userImage)
                     startActivity(intent)
                 } else {
-                    // User does not exist, add user to database
+                    spinKitView.visibility = View.GONE
                     addUserFireBase(user)
                 }
             }
@@ -158,31 +157,21 @@ class AuthSelectionActivity : AppCompatActivity() {
         val currentDate = "$dayOfMonth/${month + 1}/$year"
 
         val timestamp = System.currentTimeMillis()
-        val hashMap: HashMap<String, Any?> = HashMap()
-        hashMap["uid"] = user?.uid.toString()
-        hashMap["email"] = user?.email.toString()
-        hashMap["name"] = user?.displayName.toString()
-        hashMap["profileImage"] = user?.photoUrl.toString()
-        hashMap["userType"] = "user"
-        hashMap["timestamp"] = timestamp
-        hashMap["checkFingerprint"] = false
-        hashMap["birthday"] = currentDate
+        val user = User(
+            uid = user?.uid.toString(),
+            email = user?.email.toString(),
+            name = user?.email.toString(),
+            profileImage = user?.photoUrl.toString(),
+            userType = "user",
+            timestamp = timestamp,
+            birthday = currentDate,
+            checkFingerprint = false
+        )
 
-        val ref = FirebaseDatabase.getInstance().getReference("Users")
-        ref.child(user?.uid!!)
-            .setValue(hashMap)
-            .addOnSuccessListener {
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("userImage", user.photoUrl.toString())
-                startActivity(intent)
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(
-                    this,
-                    "Failed saving user info due to ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        val intent = Intent(this, SingerListActivity::class.java)
+        intent.putExtra("user", user)
+        intent.putExtra("type", false)
+        startActivity(intent)
     }
 
 }

@@ -42,8 +42,9 @@ class SettingUserFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         firebaseAuth = FirebaseAuth.getInstance()
-
         firebaseUser = firebaseAuth.currentUser!!
+
+        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -51,8 +52,21 @@ class SettingUserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSettingUserBinding.inflate(inflater, container, false)
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
+        setupListeners()
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finishAffinity()
+                }
+            })
+
+        return binding.root
+    }
+
+    private fun setupListeners() {
         binding.backBtn.setOnClickListener {
             checkUser()
         }
@@ -63,15 +77,10 @@ class SettingUserFragment : Fragment() {
                 SettingAdminFragment.EDIT_PROFILE_REQUEST_CODE
             )
         }
+    }
 
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    requireActivity().finishAffinity()
-                }
-            })
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         userViewModel.profileImage.observe(viewLifecycleOwner) { profileImage ->
             try {
                 Glide.with(requireContext())
@@ -100,8 +109,6 @@ class SettingUserFragment : Fragment() {
         }
 
         binding.autoLogin.setOnClickListener { onRelativeLayoutClicked() }
-
-        return binding.root
     }
 
     private fun onRelativeLayoutClicked() {
@@ -122,7 +129,7 @@ class SettingUserFragment : Fragment() {
                         apply()
                     }
                     lifecycleScope.launch {
-                        userViewModel.updateUserData(null, null, null, null, null, true)
+                        userViewModel.updateUserData(null, null, null, null, null, true, null)
                     }
                 } else {
                     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -132,7 +139,7 @@ class SettingUserFragment : Fragment() {
                         apply()
                     }
                     lifecycleScope.launch {
-                        userViewModel.updateUserData(null, null, null, null, null, false)
+                        userViewModel.updateUserData(null, null, null, null, null, false, null)
                     }
                 }
             }

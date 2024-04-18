@@ -140,7 +140,7 @@ class SettingAdminFragment : Fragment() {
                         apply()
                     }
                     lifecycleScope.launch {
-                        userViewModel.updateUserData(null, null, null, null, null, true)
+                        userViewModel.updateUserData(null, null, null, null, null, true, null)
                     }
                 } else {
                     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -150,7 +150,7 @@ class SettingAdminFragment : Fragment() {
                         apply()
                     }
                     lifecycleScope.launch {
-                        userViewModel.updateUserData(null, null, null, null, null, false)
+                        userViewModel.updateUserData(null, null, null, null, null, false, null)
                     }
                 }
             }

@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.musicapp.MyApplication
 import com.example.musicapp.R
 import com.example.musicapp.databinding.ActivityRegisterBinding
+import com.example.musicapp.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
@@ -123,39 +124,23 @@ class RegisterActivity : AppCompatActivity() {
 
         val timestamp = System.currentTimeMillis()
         val uid = firebaseAuth.uid
-        val hashMap: HashMap<String, Any?> = HashMap()
-        hashMap["uid"] = uid
-        hashMap["email"] = emailTx
-        hashMap["name"] = uid
-        hashMap["profileImage"] = ""
-        hashMap["userType"] = "user"
-        hashMap["phoneNumber"] = ""
-        hashMap["timestamp"] = timestamp
-        hashMap["birthday"] = calendarTx
-        hashMap["checkFingerprint"] = false
 
-        val ref = FirebaseDatabase.getInstance().getReference("Users")
-        ref.child(uid!!)
-            .setValue(hashMap)
-            .addOnSuccessListener {
-                progressDialog.dismiss()
-                Toast.makeText(
-                    this,
-                    "Tạo tài khoản thành công...",
-                    Toast.LENGTH_SHORT
-                ).show()
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.putExtra("emailTx", emailTx)
-                startActivity(intent)
-            }
-            .addOnFailureListener { e ->
-                progressDialog.dismiss()
-                Toast.makeText(
-                    this,
-                    "Failed saving user info due to ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        val user = User(
+            uid = uid.toString(),
+            email = emailTx,
+            name = emailTx,
+            profileImage = "",
+            userType = "user",
+            timestamp = timestamp,
+            birthday = calendarTx,
+            checkFingerprint = false
+        )
+
+        val intent = Intent(this, SingerListActivity::class.java)
+        intent.putExtra("user", user)
+        intent.putExtra("type", true)
+        startActivity(intent)
+
     }
 
     private val textWatcherEmail = object : TextWatcher {

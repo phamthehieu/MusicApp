@@ -114,7 +114,7 @@ class EditProfileActivity : AppCompatActivity() {
                if (selectedDate.isNotEmpty()) {
                    spinKitView.visibility = View.VISIBLE
                    lifecycleScope.launch {
-                       userViewModel.updateUserData(null, null, selectedDate, null, null, null)
+                       userViewModel.updateUserData(null, null, selectedDate, null, null, null, null)
                    }
                    binding.birthdayEt.text = selectedDate
                    checkUpdate("birthDay")
@@ -141,7 +141,7 @@ class EditProfileActivity : AppCompatActivity() {
             binding.nameUser.text = nameUser
             spinKitView.visibility = View.VISIBLE
             lifecycleScope.launch {
-                userViewModel.updateUserData(nameUser, null, null, null, null, null)
+                userViewModel.updateUserData(nameUser, null, null, null, null, null, null)
             }
             checkUpdate("name")
             dialog.dismiss()
@@ -232,7 +232,7 @@ class EditProfileActivity : AppCompatActivity() {
                 while (!uriTask.isSuccessful);
                 val uploadedImageUrl = "${uriTask.result}"
                 lifecycleScope.launch {
-                    userViewModel.updateUserData(null, null, null, uploadedImageUrl, null, null)
+                    userViewModel.updateUserData(null, null, null, uploadedImageUrl, null, null, null)
                 }
                 imageUpdate = uploadedImageUrl
                 checkUpdate("image")

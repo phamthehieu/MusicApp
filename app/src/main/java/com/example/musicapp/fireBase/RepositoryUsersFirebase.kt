@@ -21,7 +21,8 @@ class RepositoryUsersFirebase {
         val timestamp: String?,
         val uid: String?,
         val userType: String?,
-        val checkFingerprint: Boolean?
+        val checkFingerprint: Boolean?,
+        val listArtistsId: List<*>?
     )
 
     suspend fun getUserData(): UserData {
@@ -37,14 +38,15 @@ class RepositoryUsersFirebase {
                 val uid = snapshot.child("uid").value as? String
                 val userType = snapshot.child("userType").value as? String
                 val checkFingerprint = snapshot.child("checkFingerprint").value as? Boolean
-                UserData(name, email, birthday, profileImage, timestamp, uid, userType, checkFingerprint)
+                val listArtistsId = snapshot.child("listArtistsId").value as? List<*>
+                UserData(name, email, birthday, profileImage, timestamp, uid, userType, checkFingerprint, listArtistsId)
             } else {
-                UserData(null, null, null, null, null, null, null, null)
+                UserData(null, null, null, null, null, null, null, null, null)
             }
         }
     }
 
-    suspend fun updateUserData(name: String?, email: String?, birthday: String?, profileImage: String?, userType: String?, checkFingerprint: Boolean?) {
+    suspend fun updateUserData(name: String?, email: String?, birthday: String?, profileImage: String?, userType: String?, checkFingerprint: Boolean?, listArtistsId: List<*>) {
         withContext(Dispatchers.IO) {
             val firebaseUser = firebaseAuth.currentUser
             firebaseUser?.let { user ->
@@ -55,6 +57,7 @@ class RepositoryUsersFirebase {
                 if (birthday != null) userDataMap["birthday"] = birthday
                 if (profileImage != null) userDataMap["profileImage"] = profileImage
                 if (userType != null) userDataMap["userType"] = userType
+                 userDataMap["listArtistsId"] = listArtistsId
                 userDataMap["checkFingerprint"] = checkFingerprint
 
                 userReference.updateChildren(userDataMap)

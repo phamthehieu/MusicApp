@@ -3,13 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32"
         tools:ignore="ScopedStorage" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -19,6 +23,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicApp"
         tools:targetApi="31">
+        <activity
+            android:name=".activities.MediaPlayActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MusicApp" />
+        <activity
+            android:name=".activities.SingerListActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.OTPActivity"
             android:exported="false" />
@@ -34,31 +45,16 @@
             android:exported="false"
             android:theme="@style/Theme.MusicApp" />
         <activity
-            android:name=".activities.SettingUserActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.SettingAdminActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.SelectTheLikeActivity"
             android:exported="false" />
         <activity
             android:name=".activities.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.LibrariesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.SearchesActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.AuthSelectionActivity"
             android:exported="false" />
         <activity
             android:name=".activities.RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".activities.LoginActivity"
@@ -75,6 +71,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".service.MusicService"/>
+        <receiver android:name=".MyReceiver"/>
     </application>
 
 </manifest>

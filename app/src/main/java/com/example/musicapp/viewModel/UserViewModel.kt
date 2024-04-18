@@ -43,7 +43,12 @@ class UserViewModel() : ViewModel() {
         val checkFingerprint: MutableLiveData<Boolean?>
         get() = _checkFingerprint
 
+    private val _listArtistsId = MutableLiveData<List<*>?>()
+    val listArtistsId: MutableLiveData<List<*>?>
+        get() = _listArtistsId
+
     val updateResult: LiveData<Boolean> = repository.updateResult
+
 
     init {
         getUserData()
@@ -51,7 +56,7 @@ class UserViewModel() : ViewModel() {
 
     private fun getUserData() {
         viewModelScope.launch {
-            val (name, email, birthday, profileImage, timestamp, uid, userType, checkFingerprint) = repository.getUserData()
+            val (name, email, birthday, profileImage, timestamp, uid, userType, checkFingerprint, listArtistsId) = repository.getUserData()
             _nameUser.value = name
             _email.value = email
             _birthday.value = birthday
@@ -60,10 +65,13 @@ class UserViewModel() : ViewModel() {
             _uid.value = uid
             _userType.value = userType
             _checkFingerprint.value = checkFingerprint
+            _listArtistsId.value = listArtistsId
         }
     }
 
-    suspend fun updateUserData(name: String?, email: String?, birthday: String?, profileImage: String?, userType: String?, checkFingerprint: Boolean?) {
-        repository.updateUserData(name, email, birthday, profileImage, userType, checkFingerprint)
+    suspend fun updateUserData(name: String?, email: String?, birthday: String?, profileImage: String?, userType: String?, checkFingerprint: Boolean?, listArtistsId: List<*>?) {
+        if (listArtistsId != null) {
+            repository.updateUserData(name, email, birthday, profileImage, userType, checkFingerprint, listArtistsId)
+        }
     }
 }

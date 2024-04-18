@@ -2,18 +2,40 @@ package com.example.musicapp
 
 import android.app.Application
 import android.app.DatePickerDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import java.util.Calendar
 
 class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        createChannelNotification(this)
     }
 
     companion object {
+        val CHANNEL_ID = "channel_id"
+
+        private fun createChannelNotification(context: Context) {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                val channel = NotificationChannel(
+                    CHANNEL_ID,
+                    "Channel Name",
+                    NotificationManager.IMPORTANCE_DEFAULT
+                )
+                channel.setSound(null, null)
+                channel.vibrationPattern = null
+
+                val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                manager.createNotificationChannel(channel)
+            }
+        }
 
         fun calculateAge(birthDate: Calendar): Int {
             val currentDate = Calendar.getInstance()
@@ -59,6 +81,10 @@ class MyApplication : Application() {
             )
 
             datePickerDialog.show()
+        }
+
+        fun getChannelId(): Any {
+            return CHANNEL_ID
         }
 
     }

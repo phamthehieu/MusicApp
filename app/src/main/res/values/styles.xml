@@ -16,4 +16,14 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="styleImageHome">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">5%</item>
+    </style>
+
+    <style name="styleImageMain">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20%</item>
+    </style>
+
 </resources>

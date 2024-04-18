@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/black1">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imageArtists"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/shape_image"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_person_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/styleCircleImage" />
+
+    <ImageView
+        android:background="@drawable/shape_check"
+        android:id="@+id/checkArtists"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-30dp"
+        android:src="@drawable/ic_check_black"
+        app:layout_constraintBottom_toTopOf="@+id/imageArtists"
+        app:layout_constraintEnd_toEndOf="@+id/imageArtists" />
+
+    <TextView
+        android:id="@+id/nameArtistsEt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageArtists"
+        android:layout_alignEnd="@+id/imageArtists"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:text="Tên ca sĩ"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageArtists" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

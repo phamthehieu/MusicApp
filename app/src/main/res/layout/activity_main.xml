@@ -1,32 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frame_layout"
     android:layout_width="match_parent"
-    android:background="@drawable/background"
     android:layout_height="match_parent"
+    android:background="@color/black1"
     tools:context=".activities.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/frame_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <RelativeLayout
+        android:id="@+id/playMusic"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_above="@+id/bottomNavigationView"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/shape_background_playmusic"
+        android:elevation="5dp">
 
-    </FrameLayout>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageArtists"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/black"
+            android:src="@drawable/ic_person_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/styleImageMain">
+
+        </com.google.android.material.imageview.ShapeableImageView>
+
+        <RelativeLayout
+            android:id="@+id/titleSing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/add"
+            android:layout_toEndOf="@+id/imageArtists">
+
+            <TextView
+                android:id="@+id/nameSong"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Tên bài hát"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/nameArtistsEt"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameSong"
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:text="Tên ca sĩ"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:ellipsize="end"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/playMusicAction"
+            android:contentDescription="@string/play"
+            android:foregroundGravity="center"
+            android:src="@drawable/baseline_add_circle_outline_24" />
+
+        <ImageView
+            android:id="@+id/playMusicAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="@string/play"
+            android:foregroundGravity="center"
+            android:src="@drawable/ic_play_white" />
+
+    </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="75dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@android:color/transparent"
-        app:menu="@menu/bottom_nav"/>
+        android:layout_alignParentBottom="true"
+        android:background="@color/black1"
+        app:menu="@menu/bottom_nav" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

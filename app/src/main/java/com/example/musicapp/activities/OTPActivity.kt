@@ -13,6 +13,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.musicapp.databinding.ActivityOtpactivityBinding
+import com.example.musicapp.models.User
 import com.github.ybq.android.spinkit.SpinKitView
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -160,31 +161,22 @@ class OTPActivity : AppCompatActivity() {
 
         val timestamp = System.currentTimeMillis()
         val uid = auth.uid
-        val hashMap: HashMap<String, Any?> = HashMap()
-        hashMap["uid"] = uid
-        hashMap["email"] = ""
-        hashMap["name"] = phoneNumber
-        hashMap["profileImage"] = ""
-        hashMap["userType"] = "user"
-        hashMap["timestamp"] = timestamp
-        hashMap["birthday"] = currentDate
-        hashMap["checkFingerprint"] = false
 
-        val ref = FirebaseDatabase.getInstance().getReference("Users")
-        ref.child(uid!!)
-            .setValue(hashMap)
-            .addOnSuccessListener {
-                spinKitView.visibility = View.VISIBLE
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(
-                    this,
-                    "Failed saving user info due to ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        val user = User(
+            uid = uid.toString(),
+            email = "",
+            name = phoneNumber,
+            profileImage = "",
+            userType = "user",
+            timestamp = timestamp,
+            birthday = currentDate,
+            checkFingerprint = false
+        )
+
+        val intent = Intent(this, SingerListActivity::class.java)
+        intent.putExtra("user", user)
+        intent.putExtra("type", false)
+        startActivity(intent)
     }
 
     private fun addTextChangeListener() {
