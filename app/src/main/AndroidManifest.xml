@@ -20,6 +20,9 @@
         android:theme="@style/Theme.MusicApp"
         tools:targetApi="31">
         <activity
+            android:name=".activities.SingerListActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.OTPActivity"
             android:exported="false" />
         <activity

@@ -37,7 +37,7 @@ class SplashActivity : AppCompatActivity() {
 
         Handler().postDelayed({
 //            checkUser()
-            startActivity(Intent(this, AuthSelectionActivity::class.java))
+            startActivity(Intent(this, SingerListActivity::class.java))
         }, 2000)
 
         window.setFlags(
