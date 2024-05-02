@@ -1,5 +1,6 @@
 package com.example.musicapp.activities
 
+<<<<<<< HEAD
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -13,13 +14,27 @@ import com.example.musicapp.adapters.OnSelectedArtistsIdsListener
 import com.example.musicapp.databinding.ActivitySingerListBinding
 import com.example.musicapp.models.ArtistsModel
 import com.example.musicapp.models.User
+=======
+import android.os.Bundle
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+import com.example.musicapp.R
+import com.example.musicapp.adapters.ArtistsAdapters
+import com.example.musicapp.databinding.ActivitySingerListBinding
+import com.example.musicapp.databinding.RowSingerBinding
+import com.example.musicapp.models.ArtistsModel
+>>>>>>> origin/master
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
+<<<<<<< HEAD
 class SingerListActivity : AppCompatActivity(), OnSelectedArtistsIdsListener {
+=======
+class SingerListActivity : AppCompatActivity() {
+>>>>>>> origin/master
 
     private lateinit var binding: ActivitySingerListBinding
 
@@ -29,10 +44,13 @@ class SingerListActivity : AppCompatActivity(), OnSelectedArtistsIdsListener {
 
     private lateinit var artistsAdapters: ArtistsAdapters
 
+<<<<<<< HEAD
     private lateinit var spinKitView: RelativeLayout
 
     private lateinit var listArtistsId: ArrayList<String>
 
+=======
+>>>>>>> origin/master
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySingerListBinding.inflate(layoutInflater)
@@ -40,13 +58,17 @@ class SingerListActivity : AppCompatActivity(), OnSelectedArtistsIdsListener {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
+<<<<<<< HEAD
         binding.successBtn.visibility = View.GONE
 
+=======
+>>>>>>> origin/master
         window.setFlags(
             WindowManager.LayoutParams.FLAG_SECURE,
             WindowManager.LayoutParams.FLAG_SECURE
         )
 
+<<<<<<< HEAD
         spinKitView = binding.loading
 
         spinKitView.visibility = View.VISIBLE
@@ -64,21 +86,36 @@ class SingerListActivity : AppCompatActivity(), OnSelectedArtistsIdsListener {
             }
         }
 
+=======
+        loadArtists()
+>>>>>>> origin/master
     }
 
     private fun loadArtists() {
         artistsArrayList = ArrayList()
         val ref = FirebaseDatabase.getInstance().getReference("Artists")
+<<<<<<< HEAD
         ref.addValueEventListener(object : ValueEventListener {
+=======
+        ref.addValueEventListener(object: ValueEventListener {
+>>>>>>> origin/master
             override fun onDataChange(snapshot: DataSnapshot) {
                 artistsArrayList.clear()
                 for (ds in snapshot.children) {
                     val model = ds.getValue(ArtistsModel::class.java)
+<<<<<<< HEAD
                     artistsArrayList.add(model!!)
                 }
                 artistsAdapters = ArtistsAdapters(this@SingerListActivity, artistsArrayList)
                 artistsAdapters.setOnSelectedArtistsIdsListener(this@SingerListActivity)
                 spinKitView.visibility = View.GONE
+=======
+
+                    artistsArrayList.add(model!!)
+                }
+                artistsAdapters = ArtistsAdapters(this@SingerListActivity, artistsArrayList)
+
+>>>>>>> origin/master
                 binding.categoriesRv.adapter = artistsAdapters
             }
 
@@ -88,6 +125,7 @@ class SingerListActivity : AppCompatActivity(), OnSelectedArtistsIdsListener {
         })
     }
 
+<<<<<<< HEAD
     override fun onSelectedArtistsIdsUpdated(selectedArtistsIds: ArrayList<String>) {
         Log.d("hieu73", selectedArtistsIds.size.toString())
         if (selectedArtistsIds.size >= 3) {
@@ -130,4 +168,6 @@ class SingerListActivity : AppCompatActivity(), OnSelectedArtistsIdsListener {
         }
     }
 
+=======
+>>>>>>> origin/master
 }

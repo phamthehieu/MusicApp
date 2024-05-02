@@ -7,21 +7,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+<<<<<<< HEAD
+=======
+import android.widget.ImageButton
+>>>>>>> origin/master
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.musicapp.R
+<<<<<<< HEAD
 import com.example.musicapp.activities.SingerListActivity
+=======
+>>>>>>> origin/master
 import com.example.musicapp.databinding.RowSingerBinding
 import com.example.musicapp.filters.FiltersArtists
 import com.example.musicapp.models.ArtistsModel
 
+<<<<<<< HEAD
 
 interface OnSelectedArtistsIdsListener {
     fun onSelectedArtistsIdsUpdated(selectedArtistsIds: ArrayList<String>)
 }
 
+=======
+>>>>>>> origin/master
 class ArtistsAdapters: RecyclerView.Adapter<ArtistsAdapters.HolderArtists>, Filterable {
 
     private val context: Context
@@ -42,12 +52,15 @@ class ArtistsAdapters: RecyclerView.Adapter<ArtistsAdapters.HolderArtists>, Filt
         this.arrayList = artistsArrayList
     }
 
+<<<<<<< HEAD
     private var listener: OnSelectedArtistsIdsListener? = null
 
     fun setOnSelectedArtistsIdsListener(listener: OnSelectedArtistsIdsListener) {
         this.listener = listener
     }
 
+=======
+>>>>>>> origin/master
     override fun getItemCount(): Int {
         return artistsArrayList.size
     }
@@ -80,6 +93,7 @@ class ArtistsAdapters: RecyclerView.Adapter<ArtistsAdapters.HolderArtists>, Filt
         }
 
         holder.imageArtists.setOnClickListener {
+<<<<<<< HEAD
             val nameCheck = artistsArrayList[position].name
             if (selectedArtistsIds.contains(nameCheck)) {
                 selectedArtistsIds.remove(name)
@@ -89,6 +103,16 @@ class ArtistsAdapters: RecyclerView.Adapter<ArtistsAdapters.HolderArtists>, Filt
                 holder.checkArtists.visibility = View.VISIBLE
             }
             listener?.onSelectedArtistsIdsUpdated(selectedArtistsIds)
+=======
+            val idArtists = artistsArrayList[position].idArtists
+            if (selectedArtistsIds.contains(idArtists)) {
+                selectedArtistsIds.remove(idArtists)
+                holder.checkArtists.visibility = View.GONE
+            } else {
+                selectedArtistsIds.add(idArtists)
+                holder.checkArtists.visibility = View.VISIBLE
+            }
+>>>>>>> origin/master
         }
 
     }
