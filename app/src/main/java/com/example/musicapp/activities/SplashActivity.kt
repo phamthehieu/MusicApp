@@ -51,12 +51,7 @@ class SplashActivity : AppCompatActivity() {
         editor.putBoolean("checkIsLogin", true)
         editor.apply()
         Handler().postDelayed({
-<<<<<<< HEAD
             checkUser()
-=======
-//            checkUser()
-            startActivity(Intent(this, SingerListActivity::class.java))
->>>>>>> origin/master
         }, 2000)
 
         window.setFlags(

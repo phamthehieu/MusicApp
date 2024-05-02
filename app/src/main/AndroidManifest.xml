@@ -24,13 +24,10 @@
         android:theme="@style/Theme.MusicApp"
         tools:targetApi="31">
         <activity
-<<<<<<< HEAD
             android:name=".activities.MediaPlayActivity"
             android:exported="false"
             android:theme="@style/Theme.MusicApp" />
         <activity
-=======
->>>>>>> origin/master
             android:name=".activities.SingerListActivity"
             android:exported="false" />
         <activity
