@@ -14,9 +14,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.musicapp.R
+import com.example.musicapp.activities.MediaPlayActivity
 import com.example.musicapp.databinding.RowSongBinding
 import com.example.musicapp.filters.FiltersSongs
 import com.example.musicapp.models.Check
+import com.example.musicapp.models.SongPlay
 import com.example.musicapp.service.MusicService
 
 class SongRowOneAdapters : RecyclerView.Adapter<SongRowOneAdapters.HolderSong>, Filterable {
@@ -25,13 +27,17 @@ class SongRowOneAdapters : RecyclerView.Adapter<SongRowOneAdapters.HolderSong>, 
 
     private val context: Context
 
+
     var songArrayList: ArrayList<Check.DataSong>
 
     private var arrayList: ArrayList<Check.DataSong>
 
     private var filter: FiltersSongs? = null
 
-    constructor(context: Context, songArrayList: ArrayList<Check.DataSong>) : super() {
+    constructor(
+        context: Context,
+        songArrayList: ArrayList<Check.DataSong>
+    ) : super() {
         this.context = context
         this.songArrayList = songArrayList
         this.arrayList = songArrayList
@@ -96,10 +102,17 @@ class SongRowOneAdapters : RecyclerView.Adapter<SongRowOneAdapters.HolderSong>, 
             putString("idAlbum", idAlbum)
             apply()
         }
-        Log.d("Hieu59", titleAlbum)
+        val songPlay = SongPlay(
+            titleSong = titleSong,
+            idArtists = "0",
+            nameArtists = nameArtists,
+            imageAlbum = imageAlbum,
+            preview = preview,
+            checkIsPlay = true
+        )
         val intent = Intent(context, MusicService::class.java)
         intent.putExtra("active_type", MusicService.ACTION_PLAY)
-        intent.putExtra("url_audio", preview)
+        intent.putExtra("song_play", songPlay)
         context.startService(intent)
     }
 

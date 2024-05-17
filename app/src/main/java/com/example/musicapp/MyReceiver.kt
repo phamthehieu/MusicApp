@@ -11,6 +11,8 @@ import java.io.Serializable
 class MyReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val actionMusic = intent?.getIntExtra("action_music", 0)
+        val actionLoop = intent?.getIntExtra("action_loop", 0)
+        Log.d("", actionLoop.toString())
         val bundle = intent?.extras
         val song = bundle?.get("object_song")
         val bundleSend = Bundle()
@@ -18,7 +20,7 @@ class MyReceiver: BroadcastReceiver() {
         val intentService = Intent(context, MusicService::class.java)
         intentService.putExtras(bundleSend);
         intentService.putExtra("actionMusic", actionMusic)
-        intentService.putExtra("check", true)
+        intentService.putExtra("actionLoop", actionLoop)
         context?.startService(intentService)
     }
 }

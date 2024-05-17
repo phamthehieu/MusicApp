@@ -16,7 +16,7 @@ object Check {
     )
 
     data class Album1(
-        val cover_medium: String,
+        val cover_big: String,
         val title: String,
         val id: String
     )

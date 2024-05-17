@@ -34,25 +34,33 @@ class MainActivity : AppCompatActivity() {
     private var checkIsPlay = false
     private var checkIsLogin = true
     private var audioUrl = ""
+    private var titleSong = ""
+    private var nameArtists = ""
+    private var imageAlbum = ""
 
     private val sharedPreferencesListener =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
             when (key) {
-                "titleSong" -> binding.nameSong.text =
-                    sharedPreferences.getString("titleSong", null)
+                "titleSong" -> {
+                    binding.nameSong.text = sharedPreferences.getString("titleSong", null)
+                    titleSong = sharedPreferences.getString("titleSong", null).toString()
+                }
 
-                "nameArtists" -> binding.nameArtistsEt.text =
-                    sharedPreferences.getString("nameArtists", null)
+                "nameArtists" -> {
+                    binding.nameArtistsEt.text = sharedPreferences.getString("nameArtists", null)
+                    nameArtists = sharedPreferences.getString("nameArtists", null).toString()
+                }
 
-                "imageAlbum" ->
+                "imageAlbum" -> {
                     Glide.with(this)
                         .load(sharedPreferences.getString("imageAlbum", null))
                         .placeholder(R.drawable.ic_person_gray)
                         .into(binding.imageArtists)
+                    imageAlbum = sharedPreferences.getString("imageAlbum", null).toString()
+                }
 
                 "checkIsPlay" -> {
                     checkIsPlay = sharedPreferences.getBoolean("checkIsPlay", false)
-                    Log.d("hieu55", checkIsPlay.toString())
                     if (checkIsPlay) {
                         binding.playMusicAction.setImageResource(R.drawable.ic_pause_white)
                     } else {
@@ -65,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 "preview" -> {
-                    val previewUrl = sharedPreferences.getString("preview", null)
+                    val previewUrl = sharedPreferences.getString("preview", "")
                     if (previewUrl != null) {
                         audioUrl = previewUrl
                     }
@@ -79,6 +87,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         setContentView(binding.root)
+
+        val intentMain = Intent(this, MusicService::class.java)
+        startService(intentMain)
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_SECURE,
@@ -134,8 +145,16 @@ class MainActivity : AppCompatActivity() {
             if (checkIsLogin) {
                 checkIsLogin = false
                 checkIsPlay = true
+                val songPlay = SongPlay(
+                    titleSong = titleSong,
+                    idArtists = "0",
+                    nameArtists = nameArtists,
+                    imageAlbum = imageAlbum,
+                    preview = audioUrl,
+                    checkIsPlay = true
+                )
                 intentMain.putExtra("active_type", MusicService.ACTION_PLAY)
-                intentMain.putExtra("url_audio", audioUrl)
+                intentMain.putExtra("song_play", songPlay)
                 startService(intentMain)
                 binding.playMusicAction.setImageResource(R.drawable.ic_pause_white)
             } else {
@@ -145,7 +164,6 @@ class MainActivity : AppCompatActivity() {
                 binding.playMusicAction.setImageResource(R.drawable.ic_pause_white)
             }
         }
-        Log.d("hieu145", checkIsPlay.toString())
         editor.putBoolean("checkAutoPlay", false)
         editor.putBoolean("checkIsPlay", checkIsPlay)
         editor.putBoolean("checkIsLogin", checkIsLogin)

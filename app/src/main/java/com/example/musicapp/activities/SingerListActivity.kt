@@ -99,7 +99,6 @@ class SingerListActivity : AppCompatActivity(), OnSelectedArtistsIdsListener {
 
     private fun addUserFireBase(user: User?) {
         val hashMap: HashMap<String, Any?> = HashMap()
-        Log.d("Usse", listArtistsId.toString())
         if (user != null) {
             hashMap["uid"] = user.uid
             hashMap["email"] = user.email

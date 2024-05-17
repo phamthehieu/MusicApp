@@ -1,5 +1,6 @@
 package com.example.musicapp.viewModel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,9 +38,10 @@ class ListMusicHomeModel : ViewModel() {
                     trackData.title,
                     trackData.preview,
                     Check.Artist1(trackData.artist.id, trackData.artist.name),
-                    Check.Album1(trackData.album.cover_medium, trackData.album.title, trackData.album.id)
+                    Check.Album1(trackData.album.cover_big, trackData.album.title, trackData.album.id)
                 )
             }.map { mapTrackToDataSong(it) }
+            Log.d("Hieu44", "$tracks")
             when (index) {
                 1 -> {
                     tracksDataLive1.postValue(tracks)
@@ -63,7 +65,7 @@ class ListMusicHomeModel : ViewModel() {
             titleSong = track.title,
             idArtists = track.artist.id,
             nameArtists = track.artist.name,
-            imageAlbum = track.album.cover_medium,
+            imageAlbum = track.album.cover_big,
             preview = track.preview,
             titleAlbum = track.album.title,
             idAlbum = track.album.id

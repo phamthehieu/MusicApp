@@ -2,20 +2,28 @@ package com.example.musicapp.activities
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
+import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
+import com.example.musicapp.MyApplication
 import com.example.musicapp.R
 import com.example.musicapp.databinding.ActivityMediaPlayBinding
+import com.example.musicapp.models.SongPlay
 import com.example.musicapp.service.MusicService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.imageview.ShapeableImageView
@@ -23,6 +31,8 @@ import com.google.android.material.imageview.ShapeableImageView
 class MediaPlayActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMediaPlayBinding
+    private lateinit var updatePlayerReceiver: BroadcastReceiver
+    private lateinit var mediaPlayer: MediaPlayer
 
     private var checkIsPlay = false
     private var checkIsLogin = true
@@ -33,8 +43,7 @@ class MediaPlayActivity : AppCompatActivity() {
     private var nameArtists = ""
     private var imageAlbum = ""
 
-    private val sharedPreferencesListener =
-        SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+    private val sharedPreferencesListener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
             when (key) {
                 "titleSong" -> {
                     binding.nameSong.text = sharedPreferences.getString("titleSong", null)
@@ -56,7 +65,6 @@ class MediaPlayActivity : AppCompatActivity() {
 
                 "checkIsPlay" -> {
                     checkIsPlay = sharedPreferences.getBoolean("checkIsPlay", false)
-                    Log.d("hieu41", checkIsPlay.toString())
                     if (checkIsPlay) {
                         binding.playBtn.setImageResource(R.drawable.pause)
                     } else {
@@ -72,6 +80,14 @@ class MediaPlayActivity : AppCompatActivity() {
                     val previewUrl = sharedPreferences.getString("preview", null)
                     if (previewUrl != null) {
                         audioUrl = previewUrl
+                        mediaPlayer = MediaPlayer().apply {
+                            setDataSource(previewUrl)
+                            prepareAsync()
+                            setOnPreparedListener { player ->
+                                val duration = player.duration
+                                binding.totalTime.text = MyApplication.formatTime(duration)
+                            }
+                        }
                     }
                 }
 
@@ -84,6 +100,7 @@ class MediaPlayActivity : AppCompatActivity() {
             }
         }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMediaPlayBinding.inflate(layoutInflater)
@@ -101,8 +118,50 @@ class MediaPlayActivity : AppCompatActivity() {
         binding.moreVertBtn.setOnClickListener {
             showDialog()
         }
+
+        val intentMain = Intent(this, MusicService::class.java)
+        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    val newPosition = progress * mediaPlayer.duration / 100
+                     intentMain.putExtra("active_type", MusicService.ACTION_SEEK_TO)
+                     intentMain.putExtra("seek_to", newPosition)
+                    startService(intentMain)
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+        })
+
+        setupBroadcastReceiver()
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun setupBroadcastReceiver() {
+        val sharedPreferences = this.getSharedPreferences("SongsPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        updatePlayerReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val current = intent?.getIntExtra("current", 0) ?: 0
+                val total = intent?.getIntExtra("total", 0) ?: 0
+                binding.runTime.text = MyApplication.formatTime(current)
+                binding.totalTime.text = MyApplication.formatTime(total)
+                binding.seekBar.progress = (current.toFloat() / total * 100).toInt()
+                if (current == total) {
+                    binding.playBtn.setImageResource(R.drawable.play)
+                    editor.putBoolean("checkIsPlay", false)
+                    editor.apply()
+                }
+            }
+        }
+
+        val filter = IntentFilter("com.example.musicapp.UPDATE_PLAYER")
+        registerReceiver(updatePlayerReceiver, filter, RECEIVER_NOT_EXPORTED)
+    }
 
     @SuppressLint("SetTextI18n")
     private fun showDialog() {
@@ -120,7 +179,6 @@ class MediaPlayActivity : AppCompatActivity() {
         bottomSheetDialog.show()
     }
 
-
     private fun updatePlayButton() {
         val intentMain = Intent(this, MusicService::class.java)
         val sharedPreferences = this.getSharedPreferences("SongsPrefs", Context.MODE_PRIVATE)
@@ -135,8 +193,16 @@ class MediaPlayActivity : AppCompatActivity() {
             if (checkIsLogin) {
                 checkIsLogin = false
                 checkIsPlay = true
+                val songPlay = SongPlay(
+                    titleSong = nameSong,
+                    idArtists = "0",
+                    nameArtists = nameArtists,
+                    imageAlbum = imageAlbum,
+                    preview = audioUrl,
+                    checkIsPlay = true
+                )
                 intentMain.putExtra("active_type", MusicService.ACTION_PLAY)
-                intentMain.putExtra("url_audio", audioUrl)
+                intentMain.putExtra("song_play", songPlay)
                 startService(intentMain)
                 binding.playBtn.setImageResource(R.drawable.pause)
             } else {
@@ -176,5 +242,6 @@ class MediaPlayActivity : AppCompatActivity() {
         super.onDestroy()
         val sharedPreferences = getSharedPreferences("SongsPrefs", Context.MODE_PRIVATE)
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferencesListener)
+        unregisterReceiver(updatePlayerReceiver)
     }
 }
